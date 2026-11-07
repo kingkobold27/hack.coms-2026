@@ -1,7 +1,7 @@
 class Creature{
     health;
     defense;
-    deck = new Array[60];
+    deck = new Array[10];
     discard = new Array[0];
     hand = new Array[5];
 
