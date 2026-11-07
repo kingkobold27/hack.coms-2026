@@ -32,9 +32,9 @@ class LinkedList{
             return;
         }
         while(current !== null){
-            console.log('Index: ${index} | Name: ${current.data}');
+            console.log(`Index: ${index} | Name: ${current.data}`);
             current = current.next;
-            indexx++;
+            index++;
         }
     }
 }
