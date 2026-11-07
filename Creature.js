@@ -1,6 +1,51 @@
-const maxHand = 5;
+import {Card} from './Card.js';
+ 
+export const maxHand = 5;
 
-class Creature{
+
+export class Node {
+    constructor(data){
+        this.data = data;
+        this.next = null;
+    }
+}
+
+export class LinkedList{
+    constructor(){
+        this.head = null;
+    }
+
+    append(data){
+        const newNode = new Node(data);
+        if (!this.head){
+            this.head = newNode;
+            return;
+        }
+        let current = this.head;
+        while (current.next){
+            current = current.next;
+        }
+        current.next = newNode;
+    }
+    
+    showList(){
+        let current = this.head;
+        let index = 0;
+
+        if(!current){
+            console.log("Empty LinkedList")
+            return;
+        }
+        while(current !== null){
+            console.log(`Index: ${index} | Name: ${current.data}`);
+            current = current.next;
+            index++;
+        }
+    }
+}
+
+
+export class Creature{
     health;
     defense;
     deck = new Array[10];
@@ -40,7 +85,7 @@ class Creature{
 
 }
 
-class Player extends Creature{
+export class Player extends Creature{
     health = 50;
     defense = 5;
     myTurn = true;
@@ -60,8 +105,8 @@ class Player extends Creature{
     }
     
     DisplayHand(){
-        for (let index = 0; index < this.deck.length; index++) {
-            const element = this.deck[index];
+        for (let index = 0; index < this.hand.length; index++) {
+            const element = this.hand[index];
             console.log(`Card #${index + 1}: ${element.Print}`);
         }
     }
@@ -75,23 +120,22 @@ class Player extends Creature{
     }
 
     ShowDiscard(){
-        
-        return this.discard;
+        for (let index = 0; index < this.discard.length; index++){
+            const element = this.discard[index];
+            console.log(`Card #${index + 1}: ${element.Print}`);
+        }
     }
 
     ShowDeck(){
-        const deck = new LinkedList();
-        return deck.showList;
+        for(let index = 0; index < this.deck.length; index++){
+            const element = this.discard[index];
+            console.log(`Card #${index + 1}: ${element.Print}`); 
+        }
     }
 }
 
-class Enemy extends Creature{
-    CreateSwan(someCreature){
-        this.heatlh = 200;
-        this.defense = 15;
-        this.myTurn = false;
-        
-    }
+export class Enemy extends Creature{
+    
 
     
 }

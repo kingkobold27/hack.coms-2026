@@ -7,7 +7,7 @@ const attDebuff = false;
 const defDebuff = false;
 
 
-class Card{
+export class Card{
     cardType;
     effect;
     name;
