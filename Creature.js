@@ -4,9 +4,10 @@ class Creature{
     deck = new Array[60];
     discard = new Array[0];
     hand = new Array[5];
+    myTurn = false;
 
-    constructor(heatlh, defense, deck, discard, hand){
-        this.health = heatlh;
+    constructor(health, defense, deck, discard, hand){
+        this.health = health;
         this.defense = defense;
         this.cards = deck;
         this.discard = discard;
@@ -14,15 +15,7 @@ class Creature{
     }
     
 
-    DisplayHand(){
-        for (const index of deck){
-            return 
-        }
-    }
-
-    EndTurn(){
-        //create turn managing system
-    }
+    
 
     PlayCard(index){
 
@@ -46,7 +39,15 @@ class Creature{
 }
 
 class Player extends Creature{
+    DisplayHand(){
+        for (const index of hand){
+            //console.log(`Card ${index}: ${hand[index]}`)
+        }
+    }
 
+    EndTurn(){
+        //create turn managing system
+    }
 }
 
 class Enemy extends Creature{
