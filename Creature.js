@@ -55,6 +55,7 @@ export class Creature{
     deck = [];
     discard = [];
     hand = [];
+    stamina = 3;  
     myTurn = false;
     //class vars 
     constructor(health, defense){
@@ -96,14 +97,12 @@ export class Creature{
         }
 
         //remove the played card from hand and add to discard array
-        this.hand.splice(index, 1); 
-        this.discard.push(index);
+        this.discard.push(this.hand.splice(index, 1));
+        
     }
 
-
-    DrawCard(){        
-        console.log("DrawCard has been called")
-
+    RefreshDeck(){
+        //used to refill deck when empty
         if(this.deck.length == 0){
             //check to see if cards are available to draw 
             this.deck = this.discard;
@@ -113,34 +112,40 @@ export class Creature{
                 //removes all items from discard
             } 
         } 
-        //make it a seperate function RefreshDeck()?
-        //then just scatter checks
-       
+    }
 
+    DrawCard(){ 
+        console.log("DrawCard has been called")
+        let num = 10; //base value; math.floor returns number between 0 - 9
+        if(this.deck.length > 10 && this.deck.length < 101){ //when there are more than 10 cards in the deck
+            num = 100; //set the math.floor value to return a number from 0 - 99
+            
+        }
+        let ran;
         while (this.hand.length < maxHand){
+            //this.RefreshDeck();
             //while size of hand is less than the maximum hand size
             let random = () => 
                 {
                     //gets random number for an index of the deck
-                    let num = 10; //base value; math.floor returns number between 0 - 9
                     
-                    if(this.deck.length > 10 && this.deck.length < 101){ //when there are more than 10 cards in the deck
-                        num = 100; //set the math.floor value to return a number from 0 - 99
-                        
-                    }
-                    let ran = Math.floor(Math.random() * num); //set the random value to be random between either 0 - 9 or 0 - 99
+                    
+                    
+                    ran = Math.floor(Math.random() * num); //set the random value to be random between either 0 - 9 or 0 - 99
                     if(ran > this.deck.length){ //if the number generated is greater than the number of cards in the deck
                         ran = this.deck.length; //random number becomes the last card in deck
+                        ran -= 1;
                      }
                     return ran; //random returns the random number
 
                     //this should account for it being increased AND decreased, good thing to consider...
                      
                 }
+            random();
             
-            const cardDrawn = this.deck[random];
+            const cardDrawn = this.deck[ran];
             //choose random card from deck
-            this.deck.splice(random, 1);
+            this.deck.splice(ran, 1);
             //remove chosen card from deck
             this.hand.push(cardDrawn);
             //add chosen card to hand
@@ -152,7 +157,8 @@ export class Creature{
     FlushHand(){
         while(this.hand.length != 0){
             //while hand has cards in it
-            this.hand.pop();
+
+            this.discard.push(this.hand.pop());
             //remove card from hand
         }
         this.DrawCard();
@@ -165,8 +171,8 @@ export class Creature{
 export class Player extends Creature{
     constructor(health, defense){
         super(health, defense);
-        this.CreateDeck;
-        this.DrawCard;
+        //this.CreateDeck;
+        //this.DrawCard;
         // for (let index = 0; index < 10; index++) {
         //     if(index < 5){
         //         let element = new Card("attack", 7)
@@ -186,6 +192,7 @@ export class Player extends Creature{
         console.log("CreateDeck has been called")
         for (let index = 0; index < 10; index++) {
             //for index in array, element equal to this index of the deck
+            let card = new Card("")
             if (index < 5) {
                 this.deck.push(new Card("attack", 7));
             }
@@ -200,7 +207,7 @@ export class Player extends Creature{
         for (let index = 0; index < this.hand.length; index++) {
             //for each item in hand
             const element = this.hand[index];
-            console.log(`Card #${index + 1}: ${element.Print}`);
+            console.log(`Card #${index + 1}: ${element.Print()}`);
             //log  that element
         }
     }
@@ -237,10 +244,7 @@ export class Enemy extends Creature{
     //something ill continue later
     constructor(health, defense){
         super(health, defense);
-        this.CreateDeck;
         //this deck should be like different based on enemies
-        this.DrawCard;
-        
     }
 
     CreateDeckSwan(){

@@ -10,7 +10,9 @@ window.onload = () => {
 function StartGame(player){
     
     player.CreateDeck();
+    console.log(player)
     player.DrawCard();
+    console.log(player)
     player.DisplayHand();
     console.log(player);
     
