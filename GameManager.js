@@ -10,11 +10,18 @@ window.onload = () => {
 function StartGame(player){
     
     player.CreateDeck();
-    
     player.DrawCard();
     player.DisplayHand();
     console.log(player);
     
+}
+
+function PathSelect(){
+    
+}
+
+function RoundStart(){
+
 }
 
 // TurnManager(){

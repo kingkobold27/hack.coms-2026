@@ -95,7 +95,6 @@ export class Creature{
             target.defense -= card.effect;
         }
 
-        
         //remove the played card from hand and add to discard array
         this.hand.splice(index, 1); 
         this.discard.push(index);
@@ -104,6 +103,20 @@ export class Creature{
 
     DrawCard(){        
         console.log("DrawCard has been called")
+
+        if(this.deck.length == 0){
+            //check to see if cards are available to draw 
+            this.deck = this.discard;
+            //discard becomes the deck
+            for(index =0; index <= this.deck.length; index++){
+                this.discard.pop();
+                //removes all items from discard
+            } 
+        } 
+        //make it a seperate function RefreshDeck()?
+        //then just scatter checks
+       
+
         while (this.hand.length < maxHand){
             //while size of hand is less than the maximum hand size
             let random = () => 
@@ -150,7 +163,6 @@ export class Creature{
 
 //extending from Player extends to Creature class
 export class Player extends Creature{
-    //thanks sam
     constructor(health, defense){
         super(health, defense);
         this.CreateDeck;
@@ -165,6 +177,7 @@ export class Player extends Creature{
         //         this.deck.push(element);
         //     } 
         // }
+        //why is this here? should just get rid of it considering right below this is the function for it
     }
     
     //create a hand with these cards
@@ -274,13 +287,36 @@ export class Enemy extends Creature{
             if (index < 10) {
                 //goose gets 10 strong attacks
                 this.deck.push(new Card("attack", 8));
-                //playtesting
-                //
+                
             }
         }
     }
     
+    CreateDeckRoboDuck(target){
+        console.log("CreateDeckRoboDuck has been called")
+        
+        const playerDeck = target.deck;
 
+        for(let index = 0; index < playerDeck.length; dex++){
+            //looks at player's deck and copies the contents (boss)
+            this.deck.push(playerDeck[index]);
+        } 
+//geese flock, do we want them to share a deck?, make it double the size
+    }    
+
+    CreateDeckFlock(){
+        console.log("CreateDeckFlock has been called")
+        for (let index = 0; index < 20; index++) {
+            //The flock has a bigger deck
+            //gets 20 attacks, differing power
+            if (index < 10) {
+                this.deck.push(new Card("attack", 8));
+            }
+            else{
+                this.deck.push(new Card("attack", 4));
+            }
+        }
+    }
     
     
 }
