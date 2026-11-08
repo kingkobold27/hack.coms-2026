@@ -64,7 +64,7 @@ export class Card{
    }
 
    Print(){
-    console.log(`Name: ${this.name} Type: ${this.cardType}, Effect Value: ${effect}`)
+    console.log(`Name: ${this.name} Type: ${this.cardType}, Effect Value: ${this.effect}`)
    } 
 
 

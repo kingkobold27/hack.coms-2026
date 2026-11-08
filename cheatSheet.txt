@@ -1,0 +1,19 @@
+Commands for Different Actions:
+
+    list all cards in hand : ls -a /duck/hand 
+
+    list cards that have been discarded : ls -a /duck/discards 
+
+    list all cards in the deck : ls -a /duck/deck
+
+    use attack : ./attack.sh
+
+    use shield : firewall-cmd 
+
+    heal : git revert
+
+    attack debuff : setenforce 1
+
+    defense debuff : ping 127.0.0.1
+
+    end turn : exit

@@ -49,39 +49,44 @@ export class LinkedList{
 
 
 export class Creature{
-    health;
-    defense;
-    baseDef;
+    health = 0;
+    defense = 0;
+    baseDef = 0;
+    stamina;
     deck = [];
     discard = [];
-    hand = [];
-    stamina = 3;  
+    hand = [];  
     myTurn = false;
+    name;
     //class vars 
-    constructor(health, defense){
+    constructor(health, defense, name){
         this.health = health;
         this.baseDef = defense;
         this.defense = this.baseDef;
+        this.name = name;
         //console.log(`player created: ${this}`)
     }
     //construct creature wit  health, defense   
 
     PlayCard(index, target){
+        console.log(`${this.hand[index].name} has been used against ${target.name}`);
         const card = this.hand[index];
-        const type = card.cardtype;
+        const type = this.hand[index].cardType;
         //card and type of that card
         if (type == "attack"){
             //reduce opponent's health by amount
-            target.health - card.effect; 
-
+            target.health -= card.effect; 
+            console.log(target.health);
         }
         else if(type == "defense"){
             //user's defense raised by number
-            this.defense += card.effect;
+            target.defense += card.effect;
+            console.log(target.defense);
         }
         else if(type == "heal"){
             //user heals health equal to value
-            this.health += card.effect;
+            target.health += card.effect;
+            console.log(target.health);
         }
         else if(type == "attDebuff"){
             //reduces attack of opponent
@@ -169,8 +174,9 @@ export class Creature{
 
 //extending from Player extends to Creature class
 export class Player extends Creature{
-    constructor(health, defense){
-        super(health, defense);
+    constructor(health, defense, name){
+        super(health, defense, name);
+        this.stamina = 3;
         //this.CreateDeck;
         //this.DrawCard;
         // for (let index = 0; index < 10; index++) {
@@ -227,23 +233,14 @@ export class Player extends Creature{
             console.log(`Card #${index + 1}: ${element.Print}`); 
         }
     }
-
-    EndTurn(){
-        const turn = true;
-        while(turn == true){
-            //something something player can act, maybe need a bool for that too?
-        }
-        //create turn managing system
-    }
-
     
 }
 
 export class Enemy extends Creature{
     //Something sam was doing :)
     //something ill continue later
-    constructor(health, defense){
-        super(health, defense);
+    constructor(health, defense, name){
+        super(health, defense, name);
         this.stamina = 1;
         //this deck should be like different based on enemies
     }
