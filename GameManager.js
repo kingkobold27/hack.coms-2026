@@ -4,7 +4,7 @@ let input = document.querySelector("#cmdLine");
 let terminal = document.querySelector("#terminal");
 let display = document.querySelector("#playArea");
 let logs = document.querySelector("#prevInput");
-let submitLine = document.querySelector("#submitLine");
+let buttons = document.querySelectorAll("button");
 
 let body = document.querySelector("body");
 let blockout = document.createElement("div");
@@ -26,29 +26,30 @@ let combat = true;
 function StartGame(){
     
     player.CreateDeck();
-    console.log(player)
+    // console.log(player)
     player.DrawCard();
-    console.log(player)
+    // console.log(player)
     player.DisplayHand();
-    console.log(player);
+    // console.log(player);
     
     goose.CreateDeckGoose();
-    console.log(goose);
+    // console.log(goose);
     flock.CreateDeckFlock();
-    console.log(flock);
+    // console.log(flock);
     swan.CreateDeckSwan();
-    console.log(swan);
+    // console.log(swan);
     pelican.CreateDeckPelican();
-    console.log(pelican);
+    // console.log(pelican);
     roboDuck.CreateDeckRoboDuck(player);
-    console.log(roboDuck);
+    // console.log(roboDuck);
+    let enemyArray = [goose, flock, swan, pelican, roboDuck];
     
-    player.PlayCard(0, player);
+    //player.PlayCard(0, player);
     //console.log(player.health, player.defense);
     //TurnManager(pelican);
-    RoundStart(goose);
+    RoundStart(enemyArray[iter]);
     PathSelect();
-    GameLoss();
+    //GameLoss();
 }
 StartGame();
 
@@ -59,15 +60,13 @@ function PathSelect(){
     //encounter
     //end
     //something about after leaving a location blocking out it
-    let start = false;
     let level1 = false;
     let level2 = false;
     let level3 = false;
     let level4 = false;
-    let level5 = false;
     let boss = false;
 
-    let startToFinish = [start, level1, level2, level3, level4, level5, boss];
+    let startToFinish = [level1, level2, level3, level4, boss];
     let playerPath = [];
     let current = startToFinish[iter];
 
@@ -85,17 +84,13 @@ function PathSelect(){
 }
 
 function RoundStart(eenemy){
-    console.log(`An Encounter Begins! Fighting: ${eenemy.name}`); 
+    //console.log(`An Encounter Begins! Fighting: ${eenemy.name}`); 
     //initialize player and opponent
     player.myTurn = true;
     
+
     logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
-    waitFunction();
-
-    if(!combat){
-
-    }
-
+    NewTurns(eenemy);
     // if(player.myTurn == true){
     //         logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
     //         waitFunction();
@@ -147,119 +142,13 @@ function GameWin(){
 }
 
 function GameLoss(){
-    
     blockout.innerHTML = `<div><p>You lost, lmao, get better, + L, + Ratio</p></div>`;
     blockout.innerHTML += `<button type='button' id='restart'> Restart :) </button>`;
 }
 
-function chooseFunction(target){
-    if(input.value == "./attack.sh"){
-        //input attack command
-        // const index = player.hand.findIndex(player => player.hand.cardType == 'attack');
-        let playedCard;
-        for (let index = 0; index < player.hand.length; index++) {
-            const element = player.hand[index];
-            if(element.cardType == "attack"){
-                playedCard = index;
-                break;
-            }
-        }
-        player.PlayCard(playedCard, target);
-        console.log(player.health);
-    }
-    else if(input.value == "git revert"){
-        //input heal command
-        let playedCard;
-        for (let index = 0; index < player.hand.length; index++) {
-            const element = player.hand[index];
-            if(element.cardType == "heal"){
-                playedCard = index;
-                break;
-            }
-        }
-        player.PlayCard(playedCard, target);
-        console.log(player.health);
-    }
-    else if(input.value == "firewall-cmd"){
-        //input attack debuff
-        let playedCard;
-        for (let index = 0; index < player.hand.length; index++) {
-            const element = player.hand[index];
-            if(element.cardType == "attDebuff"){
-                playedCard = index;
-                break;
-            }
-        }
-        player.PlayCard(playedCard, target);
-        console.log(player.health);
-    }
-    else if(input.value == "ping 127.0.0.1"){
-        //input defense debuff
-        let playedCard;
-        for (let index = 0; index < player.hand.length; index++) {
-            const element = player.hand[index];
-            if(element.cardType == "defDebuff"){
-                playedCard = index;
-                break;
-            }
-        }
-        player.PlayCard(playedCard, target);
-        console.log(player.health);
-    }
-    else if(input.value == "exit"){
-        //exit (end turn)
-        if(player.stamina != 0){
-            console.log("You still have stamina remaining for more actions!");
-        }
-        else{
-            player.myTurn = false;
-        }
-    }
-    else if(input.value == "ls -a /duck/hand"){
-        //view hand
-        player.DisplayHand();
-    }
-    else if(input.value == "ls -a /duck/discards"){
-        //view discards
-        player.ShowDiscard();
-    }
-    else if(input.value == "ls -a /duck/deck"){
-        //view deck
-        player.ShowDeck();
-    }
-    else{
-        console.log("No Correlated Command. Try Again.");
-    }
-    player.stamina -= 1;
-}
 
-function waitFunction(){
-    console.log("this should go first");
 
-    setTimeout(() => TurnManager(pelican), 10000);
-    //should be a timeout for 90 seconds on TurnManager
-}
-function waitFunction2(){
-    setTimeout(() => EnemyTurn(pelican), 10000);
-}
-
-async function TurnManager(pelican){
-    submitLine.onclick = chooseFunction(pelican);
-    logs.innerHTML += "<br>" + input.value;
-    input.value = "";
-    player.DisplayHand();
-    if(player.stamina > 0){
-        waitFunction();
-    }
-    else if(player.stamina == 0 && pelican.health > 0){
-        waitFunction2();
-    }
-    else if(pelican.health == 0){
-        RoundWin(pelican);
-    }
-}
-
-async function EnemyTurn(pelican){
+function EnemyTurn(){
     logs.innerHTML += `<br>something should have happened`;
     if(player.health > 0){
 
@@ -270,28 +159,84 @@ async function EnemyTurn(pelican){
     }
 }
 
-function TurnManagerBoss(roboDuck){
-    RoundStart();
-    let whoTurn = 1;
-    while(true){
-        if(whoTurn % 2 != 0){
-            player.myTurn = true;
+
+ function NewTurns(enemy){
+    while(combat){
+        if(player.myTurn = true){
+            if(player.stamina == 0){
+                player.myTurn = false;
+            }
+            else{
+                buttons[0].addEventListener("click", Attack(enemy));
+                buttons[1].addEventListener("click", Heal());
+                buttons[2].addEventListener("click", AttDebuff(enemy));
+                buttons[3].addEventListener("click", DefDebuff(enemy));
+                buttons[4].addEventListener("click", Exit());
+            }
+            
+
         }
-        else{
-            player.myTurn = false;
-        }
-        if(player.health <= 0){
-            GameLoss();
-            break;
-        }
-        else if(player.health <= 0 && roboDuck.health <= 0){
-            GameLoss();
-            break;
-        }
-        if(roboDuck.health <= 0){
-            GameWin();
-            break;
-        }
-        whoTurn++;
+        
     }
-}
+ }
+ function GetCard(type){
+    let chosenCard;
+    for (const card of player.hand) {
+        if(card.cardType == type){
+            chosenCard = card;
+            break;
+        }
+    }
+    if(!chosenCard){
+        chosenCard = null;
+    }
+    return chosenCard;
+ }
+ function Attack(enemy){
+    let chosenCard = GetCard("attack");
+    if(chosenCard == null){
+        logs.innerHTML += `no card of the chosen type found in hand`;
+    }
+    else{
+        player.PlayCard(player.hand.indexOf(chosenCard), enemy);
+        player.stamina -= 1;
+    }
+    
+ }
+ function Heal(){
+    let chosenCard = GetCard("heal");
+    if(chosenCard == null){
+        logs.innerHTML += `no card of the chosen type found in hand`;
+    }
+    else{
+        player.PlayCard(player.hand.indexOf(chosenCard), player);
+        player.stamina -= 1;
+    }
+    
+ }
+ function AttDebuff(enemy){
+    let chosenCard = GetCard("attDebuff");
+    if(chosenCard == null){
+        logs.innerHTML += `no card of the chosen type found in hand`;
+    }
+    else{
+        player.PlayCard(player.hand.indexOf(chosenCard), enemy);
+        player.stamina -= 1;
+    }
+    
+ }
+ function DefDebuff(enemy){
+    let chosenCard = GetCard("defDebuff");
+    if(chosenCard == null){
+        logs.innerHTML += `no card of the chosen type found in hand`;
+    }
+    else{
+        player.PlayCard(player.hand.indexOf(chosenCard), enemy);
+        player.stamina -= 1;
+    }
+    
+ }
+ function Exit(){
+    player.myTurn = false;
+    player.stamina = 3;
+ }

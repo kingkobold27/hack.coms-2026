@@ -66,7 +66,7 @@ export class Creature{
     //construct creature wit  health   
 
     PlayCard(index, target){
-        console.log(`${this.hand[index].name} has been used against ${target.name}`);
+        //console.log(`${this.hand[index].name} has been used against ${target.name}`);
         const card = this.hand[index];
         const type = this.hand[index].cardType;
         //card and type of that card
@@ -140,8 +140,12 @@ export class Creature{
                 }
             random();
             
-            const cardDrawn = this.deck[ran];
+            let cardDrawn = this.deck[ran];
             //choose random card from deck
+            if(cardDrawn == undefined){
+                ran -= 1;
+                cardDrawn = this.deck[ran];
+            }
             this.deck.splice(ran, 1);
             //remove chosen card from deck
             this.hand.push(cardDrawn);
@@ -183,6 +187,11 @@ export class Player extends Creature{
             }
         }
         //then show hand
+    }
+
+    AddCardToDeck(card){
+        console.log(`Added ${card} to deck`);
+        this.deck.push(card);
     }
 
     DisplayHand(){

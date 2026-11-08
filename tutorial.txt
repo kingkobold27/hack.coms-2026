@@ -1,1 +1,26 @@
 
+Thank you for trying out our game!
+
+This is a game based around using commands found in linux to defeat enemies, and was created for hack.COMS 2026.
+
+How to play:
+
+Type commands into the terminal to fight enemies! You have 4 main actions: attack, heal, attack debuff, and attack buff. The commands to use these are given in cheatSheet.txt. 
+
+Each round of combat, you get to execute 3 commands. 
+
+You start with 10 total commands and have access to 5 of them at a time. 
+
+When a command is used, it is moved to the discard pile. 
+
+Commands that were usable and went unused on your turn are also sent to the discard pile at the end of your turn, giving a fresh batch of commands at the start of each turn. 
+
+commands in the discard pile can’t be used again until all commands in the deck have been gone through.
+
+Each enemy has a different set of commands they can use
+
+At the end of your turn, use the exit command to let the enemy continue and have it cycle back to you.
+
+After a battle, you receive new commands that can be used in future battles and are sent to the map.
+
+Select the next level and keep going!
