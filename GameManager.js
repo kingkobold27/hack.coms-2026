@@ -17,6 +17,9 @@ let swan = new Enemy(125, 5, "chris");
 let pelican = new Enemy(175, 8, "peter");
 let roboDuck = new Enemy(200, 10, "alex");
 
+let iter = 0;
+
+
 function StartGame(){
     
     player.CreateDeck();
@@ -39,6 +42,7 @@ function StartGame(){
     
     player.PlayCard(0, player);
     //console.log(player.health, player.defense);
+    PathSelect();
     GameLoss();
 }
 StartGame();
@@ -50,20 +54,25 @@ function PathSelect(){
     //encounter
     //end
     //something about after leaving a location blocking out it
-    const startToFinish = [start, level1, level2, level3, level4, level5, boss];
-    const playerPath = [];
-    let iter = 0;
-    const current = startToFinish[iter];
-    while(true){
-        blockout.innerHTML += `<button type='button' id='continue'> Continue to next stage </button>`;
-        //make button when pressed
-        //continue to next stage
-        //append current, make current start to finish plus 1
-        playerPath.append(current);
-        current = startToFinish[iter +1]
-    }
-    playerPath.append(current);
-    
+    let start = false;
+    let level1 = false;
+    let level2 = false;
+    let level3 = false;
+    let level4 = false;
+    let level5 = false;
+    let boss = false;
+
+    let startToFinish = [start, level1, level2, level3, level4, level5, boss];
+    let playerPath = [];
+    let current = startToFinish[iter];
+
+    blockout.innerHTML += `<button type='button' id='continue'> Continue to next stage </button>`;
+       
+    playerPath.push(current);
+    current = startToFinish[iter++];
+    current = true;
+    console.log(`This means that the list has ${current} and ${startToFinish[2]}`);
+        
 
 
     
