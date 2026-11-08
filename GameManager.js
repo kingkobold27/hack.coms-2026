@@ -19,7 +19,7 @@ let pelican = new Enemy(175, "peter");
 let roboDuck = new Enemy(200, "alex");
 
 let iter = 0;
-let whoTurn = 1;
+let combat = true;
 
 
 
@@ -89,24 +89,26 @@ function RoundStart(eenemy){
     //initialize player and opponent
     player.myTurn = true;
     
-    while(true){
-        if(player.myTurn == true){
-            logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
-            //waitFunction();
-        }
-        else{
+    logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
+    waitFunction();
 
-            player.myTurn = true;
-        }
-        if(player.health <= 0){
-            GameLoss();
-            break;
-        }
-        else if(eenemy.health <= 0){
-            RoundWin(eenemy);
-            break;
-        }
+    if(!combat){
+
     }
+
+    // if(player.myTurn == true){
+    //         logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
+    //         waitFunction();
+    //     }
+    //     else{
+    //         player.myTurn = true;
+    //     }
+    //     if(player.health <= 0){
+    //         GameLoss();
+    //     }
+    //     else if(eenemy.health <= 0){
+    //         RoundWin(eenemy);
+    //     }
     
 }
 
@@ -234,15 +236,38 @@ function chooseFunction(target){
 function waitFunction(){
     console.log("this should go first");
 
-    setTimeout(() => TurnManager(pelican), 5000);
+    setTimeout(() => TurnManager(pelican), 10000);
     //should be a timeout for 90 seconds on TurnManager
+}
+function waitFunction2(){
+    setTimeout(() => EnemyTurn(pelican), 10000);
 }
 
 async function TurnManager(pelican){
     submitLine.onclick = chooseFunction(pelican);
-    logs.innerHTML += input.value;
+    logs.innerHTML += "<br>" + input.value;
     input.value = "";
-    player.myTurn = false;
+    player.DisplayHand();
+    if(player.stamina > 0){
+        waitFunction();
+    }
+    else if(player.stamina == 0 && pelican.health > 0){
+        waitFunction2();
+    }
+    else if(pelican.health == 0){
+        RoundWin(pelican);
+    }
+}
+
+async function EnemyTurn(pelican){
+    logs.innerHTML += `<br>something should have happened`;
+    if(player.health > 0){
+
+        waitFunction();
+    }
+    else{
+        GameLoss();
+    }
 }
 
 function TurnManagerBoss(roboDuck){

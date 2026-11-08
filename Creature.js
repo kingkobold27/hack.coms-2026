@@ -2,6 +2,7 @@ import {Card} from './Card.js';
  
 export const maxHand = 5;
 
+let logs = document.querySelector("#prevInput");
 
 export class Node {
     //node class for LinkedList
@@ -188,6 +189,7 @@ export class Player extends Creature{
         for (let index = 0; index < this.hand.length; index++) {
             //for each item in hand
             const element = this.hand[index];
+            logs.innerHTML += `<br>Card #${index + 1}: ${element.name}`;
             console.log(`Card #${index + 1}: ${element.name}`);
             //log  that element
         }
