@@ -4,6 +4,7 @@ let input = document.querySelector("#cmdLine");
 let terminal = document.querySelector("#terminal");
 let display = document.querySelector("#playArea");
 let logs = document.querySelector("#prevInput");
+let submitLine = document.querySelector("#submitLine");
 
 let body = document.querySelector("body");
 let blockout = document.createElement("div");
@@ -42,6 +43,7 @@ function StartGame(){
     
     player.PlayCard(0, player);
     //console.log(player.health, player.defense);
+    //TurnManager(pelican);
     PathSelect();
     GameLoss();
 }
@@ -208,17 +210,6 @@ function chooseFunction(target){
     player.stamina -= 1;
 }
 
-function PlayerTurn(target){
-
-    while(player.myTurn == true){
-        input.addEventListener("keydown", chooseFunction(target));
-        logs.innerHTML += input.value;
-        input.value = "";
-    }
-    
-    
-}
-
 function TurnManager(pelican){
     RoundStart();
     let whoTurn = 1;
@@ -226,7 +217,10 @@ function TurnManager(pelican){
         player.health;
         if(whoTurn % 2 != 0){
             player.myTurn = true;
-            PlayerTurn(pelican);
+            //input.addEventListener("keydown", chooseFunction(pelican));
+            submitLine.onclick = chooseFunction(pelican);
+            logs.innerHTML += input.value;
+            input.value = "";
         }
         else{
             player.myTurn = false;
