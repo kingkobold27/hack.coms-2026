@@ -210,10 +210,10 @@ export class Player extends Creature{
     }
     
     DisplayHand(){
-        for (let index = 0; index < this.hand.length-1; index++) {
+        for (let index = 0; index < this.hand.length; index++) {
             //for each item in hand
             const element = this.hand[index];
-            console.log(`Card #${index + 1}: ${element.Print()}`);
+            console.log(`Card #${index + 1}: ${element.name}`);
             //log  that element
         }
     }
@@ -222,7 +222,7 @@ export class Player extends Creature{
         //works same as DisplayHand but for discard array
         for (let index = 0; index < this.discard.length; index++){
             const element = this.discard[index];
-            console.log(`Card #${index + 1}: ${element.Print}`);
+            console.log(`Card #${index + 1}: ${element.name}`);
         }
     }
 
@@ -230,7 +230,7 @@ export class Player extends Creature{
         //works same as DisplayHand but for deck array
         for(let index = 0; index < this.deck.length; index++){
             const element = this.discard[index];
-            console.log(`Card #${index + 1}: ${element.Print}`); 
+            console.log(`Card #${index + 1}: ${element.name}`); 
         }
     }
     
