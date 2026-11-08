@@ -133,9 +133,6 @@ export class Creature{
             let random = () => 
                 {
                     //gets random number for an index of the deck
-                    
-                    
-                    
                     ran = Math.floor(Math.random() * num); //set the random value to be random between either 0 - 9 or 0 - 99
                     if(ran > this.deck.length){ //if the number generated is greater than the number of cards in the deck
                         ran = this.deck.length; //random number becomes the last card in deck
