@@ -49,25 +49,6 @@ export class Card{
             console.log(`Effect: ${this.cardType} ${this.effect}`);
 
         }
-        
-    
    }
-
-   GetCardType(){
-        //returns cardtype for this card
-        return this.cardType;
-   }
-
-   GetCardEffect(){
-        //returns effect of card
-        return this.effect;
-   }
-
-   Print(){
-    console.log(`Name: ${this.name} Type: ${this.cardType}, Effect Value: ${this.effect}`);
-   } 
-
-
-
 }
 
