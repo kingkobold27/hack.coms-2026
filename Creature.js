@@ -244,6 +244,7 @@ export class Enemy extends Creature{
     //something ill continue later
     constructor(health, defense){
         super(health, defense);
+        this.stamina = 1;
         //this deck should be like different based on enemies
     }
 
@@ -301,7 +302,7 @@ export class Enemy extends Creature{
         
         const playerDeck = target.deck;
 
-        for(let index = 0; index < playerDeck.length; dex++){
+        for(let index = 0; index < playerDeck.length; index++){
             //looks at player's deck and copies the contents (boss)
             this.deck.push(playerDeck[index]);
         } 
