@@ -5,6 +5,8 @@ let terminal = document.querySelector("#terminal");
 let display = document.querySelector("#playArea");
 let logs = document.querySelector("#prevInput");
 let buttons = document.querySelectorAll("button");
+let playerSprite = document.querySelector("#playerimg");
+let enemySprite = document.querySelector("#enemyimg");
 
 let body = document.querySelector("body");
 let blockout = document.createElement("div");
@@ -20,7 +22,7 @@ let roboDuck = new Enemy(200, "alex");
 
 let iter = 0;
 let combat = true;
-
+let enemyArray = [goose, swan, flock, pelican, roboDuck];
 
 
 function StartGame(){
@@ -42,13 +44,29 @@ function StartGame(){
     // console.log(pelican);
     roboDuck.CreateDeckRoboDuck(player);
     // console.log(roboDuck);
-    let enemyArray = [goose, flock, swan, pelican, roboDuck];
+    
     
     //player.PlayCard(0, player);
     //console.log(player.health, player.defense);
     //TurnManager(pelican);
-    RoundStart(enemyArray[iter]);
-    PathSelect();
+    while(iter <=4){
+        let enemy = enemyArray[iter];
+        RoundStart(enemy);
+        player.FlushHand();
+        player.DisplayHand();
+        
+        PathSelect();
+        if(player.health <= 0){
+            GameLoss();
+            combat = false;
+        }
+        else if(enemy.health <= 0){
+            RoundWin(enemy);
+            combat = false;
+        }
+    }
+
+    GameWin();
     //GameLoss();
 }
 StartGame();
@@ -84,6 +102,9 @@ function PathSelect(){
 }
 
 function RoundStart(eenemy){
+    if(enemyArray[iter] == goose){
+        enemySprite.innerHTML = `<img src='https://drive.google.com/file/d/1Q-7NFiQ1NQ7GpUjQL75GMUpXnVwXAbRp/view'`;
+    }
     //console.log(`An Encounter Begins! Fighting: ${eenemy.name}`); 
     //initialize player and opponent
     player.myTurn = true;
@@ -159,14 +180,21 @@ function EnemyTurn(){
     }
 }
 
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
 
  function NewTurns(enemy){
+    combat = true;
     while(combat){
         if(player.myTurn = true){
             if(player.stamina == 0){
                 player.myTurn = false;
+                player.hand.FlushHand();
             }
             else{
+                player.DisplayHand();
                 buttons[0].addEventListener("click", Attack(enemy));
                 buttons[1].addEventListener("click", Heal());
                 buttons[2].addEventListener("click", AttDebuff(enemy));
@@ -175,6 +203,13 @@ function EnemyTurn(){
             }
             
 
+        }
+        else{
+            //choose random # 0-4
+            //play card at that index in enemy's hand
+            let randCard = getRandomArbitrary(0,4);
+            enemy.PlayCard(hand[randCard], player);
+            enemy.FlushHand();
         }
         
     }
