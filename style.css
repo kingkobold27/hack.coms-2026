@@ -5,3 +5,6 @@
 #commandArea{
     display: grid;
 }
+#prevInput{
+    overflow: auto;
+}

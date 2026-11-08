@@ -52,7 +52,18 @@ function PathSelect(){
     //something about after leaving a location blocking out it
     const startToFinish = [start, level1, level2, level3, level4, level5, boss];
     const playerPath = [];
-    const current = path[0];
+    let iter = 0;
+    const current = startToFinish[iter];
+    while(true){
+        blockout.innerHTML += `<button type='button' id='continue'> Continue to next stage </button>`;
+        //make button when pressed
+        //continue to next stage
+        //append current, make current start to finish plus 1
+        playerPath.append(current);
+        current = startToFinish[iter +1]
+    }
+    playerPath.append(current);
+    
 
 
     
@@ -192,6 +203,8 @@ function PlayerTurn(target){
 
     while(player.myTurn == true){
         input.addEventListener("keydown", chooseFunction(target));
+        logs.innerHTML += input.value;
+        input.value = "";
     }
     
     
