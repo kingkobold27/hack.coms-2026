@@ -16,3 +16,46 @@
     overflow: auto;
     color: white;
 }
+
+/* mostly for styling the title in the home screen */
+h1 {
+  font-family: "Sometype Mono", monospace;
+  line-height:0.4;
+  font-optical-sizing: auto;
+  font-size: 100px;
+  font-weight: 700;
+}
+.h2{
+    font-family: "Sometype Mono", monospace;
+    line-height:0.9;
+    font-optical-sizing: auto;
+    font-size: 75px;
+    font-weight: 500;
+}
+h3{
+    font-family: "Sometype Mono", monospace;
+    line-height:0.9;
+    font-optical-sizing: auto;
+    font-size: 50px;
+}
+/* specifically for the map screen */
+h4{
+font-family: "Sometype Mono", monospace;
+line-height:.09;
+font-size: 45;
+}
+/* for buttons on homepage */
+h5{
+    font-family: "Sometype Mono", monospace;
+    font-optical-sizing: auto;
+    font-size: 40px;
+}
+
+
+/* main styling of overal game (terminal, navigation, etc) */
+body{
+font-family: "Sometype Mono", monospace;
+line-height: 1;
+font-size: 25px;
+font-weight: 400;
+}
