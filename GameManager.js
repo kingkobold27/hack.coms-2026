@@ -11,14 +11,16 @@ let blockout = document.createElement("div");
 blockout.style.color = "black";
 body.appendChild(blockout);
 
-let player = new Player(50, 5, "darien");
-let goose = new Enemy(100, 5, "sam");
-let flock = new Enemy(150, 5, "vi");
-let swan = new Enemy(125, 5, "chris");
-let pelican = new Enemy(175, 8, "peter");
-let roboDuck = new Enemy(200, 10, "alex");
+let player = new Player(50, "darien");
+let goose = new Enemy(100, "sam");
+let flock = new Enemy(150, "vi");
+let swan = new Enemy(125, "chris");
+let pelican = new Enemy(175, "peter");
+let roboDuck = new Enemy(200, "alex");
 
 let iter = 0;
+let whoTurn = 1;
+
 
 
 function StartGame(){
@@ -44,6 +46,7 @@ function StartGame(){
     player.PlayCard(0, player);
     //console.log(player.health, player.defense);
     //TurnManager(pelican);
+    RoundStart(goose);
     PathSelect();
     GameLoss();
 }
@@ -81,11 +84,29 @@ function PathSelect(){
     
 }
 
-function RoundStart(){
-    console.log(`An Encounter Begins! Fighting: ${goose.name}`);
+function RoundStart(eenemy){
+    console.log(`An Encounter Begins! Fighting: ${eenemy.name}`); 
     //initialize player and opponent
     player.myTurn = true;
-    logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
+    
+    while(true){
+        if(player.myTurn == true){
+            logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
+            //waitFunction();
+        }
+        else{
+
+            player.myTurn = true;
+        }
+        if(player.health <= 0){
+            GameLoss();
+            break;
+        }
+        else if(eenemy.health <= 0){
+            RoundWin(eenemy);
+            break;
+        }
+    }
     
 }
 
@@ -210,38 +231,18 @@ function chooseFunction(target){
     player.stamina -= 1;
 }
 
-function TurnManager(pelican){
-    RoundStart();
-    let whoTurn = 1;
-    while(player.myTurn){
-        
-    }
-    while(true){
-        player.health;
-        if(whoTurn % 2 != 0){
-            player.myTurn = true;
-            //input.addEventListener("keydown", chooseFunction(pelican));
-            submitLine.onclick = chooseFunction(pelican);
-            logs.innerHTML += input.value;
-            input.value = "";
-        }
-        else{
-            player.myTurn = false;
-        }
-        if(player.health <= 0){
-            GameLoss();
-            break;
-        }
-        else if(player.health <= 0 && pelican.health <= 0){
-            GameLoss();
-            break;
-        }
-        if(pelican.health <= 0){
-            RoundWin();
-            break;
-        }
-        whoTurn++;
-    }
+function waitFunction(){
+    console.log("this should go first");
+
+    setTimeout(() => TurnManager(pelican), 5000);
+    //should be a timeout for 90 seconds on TurnManager
+}
+
+async function TurnManager(pelican){
+    submitLine.onclick = chooseFunction(pelican);
+    logs.innerHTML += input.value;
+    input.value = "";
+    player.myTurn = false;
 }
 
 function TurnManagerBoss(roboDuck){
