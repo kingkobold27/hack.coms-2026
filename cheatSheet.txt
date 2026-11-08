@@ -8,11 +8,9 @@ Commands for Different Actions:
 
     use attack : ./attack.sh
 
-    use shield : firewall-cmd 
-
     heal : git revert
 
-    attack debuff : setenforce 1
+    attack debuff : firewall-cmd 
 
     defense debuff : ping 127.0.0.1
 

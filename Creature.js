@@ -50,8 +50,6 @@ export class LinkedList{
 
 export class Creature{
     health = 0;
-    defense = 0;
-    baseDef = 0;
     stamina;
     deck = [];
     discard = [];
@@ -59,14 +57,12 @@ export class Creature{
     myTurn = false;
     name;
     //class vars 
-    constructor(health, defense, name){
+    constructor(health, name){
         this.health = health;
-        this.baseDef = defense;
-        this.defense = this.baseDef;
         this.name = name;
         //console.log(`player created: ${this}`)
     }
-    //construct creature wit  health, defense   
+    //construct creature wit  health   
 
     PlayCard(index, target){
         console.log(`${this.hand[index].name} has been used against ${target.name}`);
@@ -77,11 +73,6 @@ export class Creature{
             //reduce opponent's health by amount
             target.health -= card.effect; 
             console.log(target.health);
-        }
-        else if(type == "defense"){
-            //user's defense raised by number
-            target.defense += card.effect;
-            console.log(target.defense);
         }
         else if(type == "heal"){
             //user heals health equal to value
@@ -96,9 +87,13 @@ export class Creature{
                 }
             }
         }
-        else if(type == "defDebuff"){
-            //reduce target's defense by effect
-            target.defense -= card.effect;
+        else if(type == "attBuff"){
+            //increase user's attack
+            for (const cyard of target.deck) {
+                if(cyard.cardtype == "attack"){
+                    cyard.effect += card.effect;
+                }
+            }
         }
 
         //remove the played card from hand and add to discard array
@@ -135,8 +130,7 @@ export class Creature{
                     //gets random number for an index of the deck
                     ran = Math.floor(Math.random() * num); //set the random value to be random between either 0 - 9 or 0 - 99
                     if(ran > this.deck.length){ //if the number generated is greater than the number of cards in the deck
-                        ran = this.deck.length; //random number becomes the last card in deck
-                        ran -= 1;
+                        ran = this.deck.length - 1; //random number becomes the last card in deck
                      }
                     return ran; //random returns the random number
 
@@ -171,41 +165,25 @@ export class Creature{
 
 //extending from Player extends to Creature class
 export class Player extends Creature{
-    constructor(health, defense, name){
-        super(health, defense, name);
+    constructor(health, name){
+        super(health, name);
         this.stamina = 3;
-        //this.CreateDeck;
-        //this.DrawCard;
-        // for (let index = 0; index < 10; index++) {
-        //     if(index < 5){
-        //         let element = new Card("attack", 7)
-        //         this.deck.push(element);
-        //     }
-        //     else{
-        //         let  element = new Card("defense", 2);
-        //         this.deck.push(element);
-        //     } 
-        // }
-        //why is this here? should just get rid of it considering right below this is the function for it
     }
     
-    //create a hand with these cards
-    //function in this context cant happen inside of a class, you would have to move it out
     CreateDeck(){
         console.log("CreateDeck has been called")
         for (let index = 0; index < 10; index++) {
             //for index in array, element equal to this index of the deck
-            let card = new Card("")
             if (index < 5) {
                 this.deck.push(new Card("attack", 7));
             }
             else{
-                this.deck.push(new Card("defense", 2));
+                this.deck.push(new Card("heal", 5));
             }
         }
         //then show hand
     }
-    
+
     DisplayHand(){
         for (let index = 0; index < this.hand.length; index++) {
             //for each item in hand
@@ -217,7 +195,7 @@ export class Player extends Creature{
     
     ShowDiscard(){
         //works same as DisplayHand but for discard array
-        for (let index = 0; index < this.discard.length; index++){
+        for (let index = 0; index < this.discard.length; index++) {
             const element = this.discard[index];
             console.log(`Card #${index + 1}: ${element.name}`);
         }
@@ -227,17 +205,18 @@ export class Player extends Creature{
         //works same as DisplayHand but for deck array
         for(let index = 0; index < this.deck.length; index++){
             const element = this.discard[index];
-            console.log(`Card #${index + 1}: ${element.name}`); 
+            console.log(`Card #${index + 1}: ${element.name}`);
         }
     }
     
 }
 
+
 export class Enemy extends Creature{
     //Something sam was doing :)
     //something ill continue later
-    constructor(health, defense, name){
-        super(health, defense, name);
+    constructor(health, name){
+        super(health, name);
         this.stamina = 1;
         //this deck should be like different based on enemies
     }
@@ -253,7 +232,7 @@ export class Enemy extends Creature{
             }
             else{
                 //swan gets 3 debuffs
-                this.deck.push(new Card("defDebuff", 2));
+                this.deck.push(new Card("attBuff", 2));
             }
         }
     }
@@ -263,7 +242,7 @@ export class Enemy extends Creature{
         for (let index = 0; index < 10; index++) {
             //for index in array, element equal to this index of the deck
             //giving different quantities and values for the cards for different enemies
-            //pelican gets 4 attacks, 3 heals, and 3 defense
+            //pelican gets 4 attacks, 3 heals, and 3 debuffs
             if (index < 4) {
                 
                 this.deck.push(new Card("attack", 4));
@@ -272,8 +251,8 @@ export class Enemy extends Creature{
                 this.deck.push(new Card("heal", 6));
             }
             else{
-                //pelican gets 3 defense
-                this.deck.push(new Card("defense", 10));
+                //pelican gets 3 attack debuff
+                this.deck.push(new Card("attDebuff", 10));
             }
         }
     }

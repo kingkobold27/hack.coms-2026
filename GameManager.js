@@ -3,8 +3,12 @@ import {Card} from './Card.js';
 let input = document.querySelector("#cmdLine");
 let terminal = document.querySelector("#terminal");
 let display = document.querySelector("#playArea");
+let logs = document.querySelector("#prevInput");
 
-
+let body = document.querySelector("body");
+let blockout = document.createElement("div");
+blockout.style.color = "black";
+body.appendChild(blockout);
 
 let player = new Player(50, 5, "darien");
 let goose = new Enemy(100, 5, "sam");
@@ -35,6 +39,7 @@ function StartGame(){
     
     player.PlayCard(0, player);
     //console.log(player.health, player.defense);
+    GameLoss();
 }
 StartGame();
 
@@ -45,6 +50,12 @@ function PathSelect(){
     //encounter
     //end
     //something about after leaving a location blocking out it
+    const startToFinish = [start, level1, level2, level3, level4, level5, boss];
+    const playerPath = [];
+    const current = path[0];
+
+
+    
     
 }
 
@@ -52,32 +63,48 @@ function RoundStart(){
     console.log(`An Encounter Begins! Fighting: ${goose.name}`);
     //initialize player and opponent
     player.myTurn = true;
+    logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
     
 }
 
-function RoundWin(){
+function RoundWin(enemy){
     //if( <CURRENT ENEMY.health <= 0){
         //you win screen
         // add to deck reward
         //deck.addCard
         //return to map
     //}
-    
+    let ran = Math.floor(Math.random() * 10);
+    let newCard;
+    if(ran == 0 || ran == 4 || ran == 8){
+        newCard = new Card("attack", 7)
+        player.deck.push(newCard);
+    }
+    else if(ran == 1 || ran == 5 || ran == 9){
+        newCard = new Card("heal", 5)
+        player.deck.push(newCard);
+    }
+    else if(ran == 2 || ran == 6){
+        newCard = new Card("attDebuff", 3)
+        player.deck.push(newCard);
+    }
+    else if(ran == 3 || ran == 7){
+        newCard = new Card("attBuff", 4)
+        player.deck.push(newCard);
+    }
+    logs.innerHTML += `<br>You defeated ${enemy}!`;
+    logs.innerHTML += `<br>You added ${newCard} to your deck`;
 }
 
 function GameWin(){
-    if(roboDuck.health <= 0){
-        //beat the game screen
-        //restart button
-    }
-    
+    blockout.innerHTML = `<div><p>You win, yay, you are better, + W, + Skilled</p></div>`;
+    blockout.innerHTML += `<button type='button' id='restart'> Restart :) </button>`;
 }
 
 function GameLoss(){
-    if(player.health <= 0){
-        //show game over screen
-        //restart button
-    }
+    
+    blockout.innerHTML = `<div><p>You lost, lmao, get better, + L, + Ratio</p></div>`;
+    blockout.innerHTML += `<button type='button' id='restart'> Restart :) </button>`;
 }
 
 function chooseFunction(target){
@@ -88,19 +115,6 @@ function chooseFunction(target){
         for (let index = 0; index < player.hand.length; index++) {
             const element = player.hand[index];
             if(element.cardType == "attack"){
-                playedCard = index;
-                break;
-            }
-        }
-        player.PlayCard(playedCard, target);
-        console.log(player.health);
-    }
-    else if(input.value == "firewall-cmd"){
-        //input defense command
-        let playedCard;
-        for (let index = 0; index < player.hand.length; index++) {
-            const element = player.hand[index];
-            if(element.cardType == "defense"){
                 playedCard = index;
                 break;
             }
@@ -121,7 +135,7 @@ function chooseFunction(target){
         player.PlayCard(playedCard, target);
         console.log(player.health);
     }
-    else if(input.value == "setenforce 1"){
+    else if(input.value == "firewall-cmd"){
         //input attack debuff
         let playedCard;
         for (let index = 0; index < player.hand.length; index++) {
@@ -167,16 +181,9 @@ function chooseFunction(target){
     else if(input.value == "ls -a /duck/deck"){
         //view deck
         player.ShowDeck();
-        //(???)
     }
     else{
-        //inputted wrong syntax
-        //turn does nothing "syntax error"
-        
-        //hi sam :)
-        //sam rock paper scissors
-        //I choose rock
-        //I also choose rock
+        console.log("No Correlated Command. Try Again.");
     }
     player.stamina -= 1;
 }
@@ -194,6 +201,7 @@ function TurnManager(pelican){
     RoundStart();
     let whoTurn = 1;
     while(true){
+        player.health;
         if(whoTurn % 2 != 0){
             player.myTurn = true;
             PlayerTurn(pelican);
