@@ -1,6 +1,7 @@
-import {maxHand, Creature, Player, Enemy} from './Creature.js';
+"use strict"
+debugger;
+import {Player, Enemy} from './Creature.js';
 import {Card} from './Card.js';
-let input = document.querySelector("#cmdLine");
 let terminal = document.querySelector("#terminal");
 let display = document.querySelector("#playArea");
 let logs = document.querySelector("#prevInput");
@@ -20,34 +21,22 @@ let swan = new Enemy(125, "chris");
 let pelican = new Enemy(175, "peter");
 let roboDuck = new Enemy(200, "alex");
 
-let iter = 0;
 let combat = true;
+let iter = 0;
 let enemyArray = [goose, swan, flock, pelican, roboDuck];
 
 
 function StartGame(){
     
     player.CreateDeck();
-    // console.log(player)
     player.DrawCard();
-    // console.log(player)
     player.DisplayHand();
-    // console.log(player);
     
     goose.CreateDeckGoose();
-    // console.log(goose);
     flock.CreateDeckFlock();
-    // console.log(flock);
     swan.CreateDeckSwan();
-    // console.log(swan);
     pelican.CreateDeckPelican();
-    // console.log(pelican);
     roboDuck.CreateDeckRoboDuck(player);
-    // console.log(roboDuck);
-    
-    
-    //player.PlayCard(0, player);
-    //console.log(player.health, player.defense);
     //TurnManager(pelican);
     while(iter <=4){
         let enemy = enemyArray[iter];
@@ -56,17 +45,8 @@ function StartGame(){
         player.DisplayHand();
         
         PathSelect();
-        if(player.health <= 0){
-            GameLoss();
-            combat = false;
-        }
-        else if(enemy.health <= 0){
-            RoundWin(enemy);
-            combat = false;
-        }
     }
-
-    GameWin();
+    //GameWin();
     //GameLoss();
 }
 StartGame();
@@ -94,47 +74,22 @@ function PathSelect(){
     current = startToFinish[iter++];
     current = true;
     console.log(`This means that the list has ${current} and ${startToFinish[2]}`);
-        
-
-
-    
-    
 }
 
 function RoundStart(eenemy){
     if(enemyArray[iter] == goose){
         enemySprite.innerHTML = `<img src='https://drive.google.com/file/d/1Q-7NFiQ1NQ7GpUjQL75GMUpXnVwXAbRp/view'`;
     }
-    //console.log(`An Encounter Begins! Fighting: ${eenemy.name}`); 
-    //initialize player and opponent
     player.myTurn = true;
     
 
     logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
     NewTurns(eenemy);
-    // if(player.myTurn == true){
-    //         logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
-    //         waitFunction();
-    //     }
-    //     else{
-    //         player.myTurn = true;
-    //     }
-    //     if(player.health <= 0){
-    //         GameLoss();
-    //     }
-    //     else if(eenemy.health <= 0){
-    //         RoundWin(eenemy);
-    //     }
+    
     
 }
 
 function RoundWin(enemy){
-    //if( <CURRENT ENEMY.health <= 0){
-        //you win screen
-        // add to deck reward
-        //deck.addCard
-        //return to map
-    //}
     let ran = Math.floor(Math.random() * 10);
     let newCard;
     if(ran == 0 || ran == 4 || ran == 8){
@@ -198,7 +153,7 @@ function getRandomArbitrary(min, max) {
                 buttons[0].addEventListener("click", Attack(enemy));
                 buttons[1].addEventListener("click", Heal());
                 buttons[2].addEventListener("click", AttDebuff(enemy));
-                buttons[3].addEventListener("click", DefDebuff(enemy));
+                buttons[3].addEventListener("click", AttBuff(enemy));
                 buttons[4].addEventListener("click", Exit());
             }
             
@@ -210,6 +165,14 @@ function getRandomArbitrary(min, max) {
             let randCard = getRandomArbitrary(0,4);
             enemy.PlayCard(hand[randCard], player);
             enemy.FlushHand();
+        }
+        if(enemy.health <= 0){
+            combat = false;
+            RoundWin(enemy);
+        }
+        else if(player.health <= 0){
+            combat = false;
+            GameLoss();
         }
         
     }
@@ -260,8 +223,8 @@ function getRandomArbitrary(min, max) {
     }
     
  }
- function DefDebuff(enemy){
-    let chosenCard = GetCard("defDebuff");
+ function AttBuff(enemy){
+    let chosenCard = GetCard("attBuff");
     if(chosenCard == null){
         logs.innerHTML += `no card of the chosen type found in hand`;
     }

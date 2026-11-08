@@ -41,7 +41,7 @@ export class Card{
             this.effect = effectValue;
             console.log(`Effect: ${this.cardType} ${this.effect}`);
         }
-        else if (type == "defDebuff"){
+        else if (type == "attBuff"){
             //setup for defense debuff cards
             //defDebuff = true;
             this.name = "Compromised";
