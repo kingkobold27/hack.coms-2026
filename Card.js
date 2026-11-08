@@ -1,11 +1,10 @@
 
 let effect;
-const attack = false;
-const defense = false;
-const heal = false;
-const attDebuff = false;
-const defDebuff = false;
-
+// let attack = false;
+// let defense = false;
+// let heal = false;
+// let attDebuff = false;
+// let defDebuff = false;
 
 export class Card{
     cardType;
@@ -15,37 +14,53 @@ export class Card{
    constructor(type, effectValue){
         this.cardType = type;
         if (type == "attack"){
-            attack = true;
+            //setup for attack cards
+            //attack = true;
             this.name = "Brute Force Attack";
             this.effect = effectValue;
-            console.log(`Effect: ${this.attack} ${this.effect}`)
+            console.log(`Effect: ${this.cardType} ${this.effect}`)
         }
         else if (type == "defense"){
-            defense = true;
+            //setup for defense cards
+            //defense = true;
             this.name = "Firewall"
             this.effect = effectValue;
-            console.log(`Effect: ${this.defense} ${this.effect}`);
+            console.log(`Effect: ${this.cardType} ${this.effect}`);
         }
         else if (type == "heal"){
-            heal = true
+            //setup for heal cards
+            //heal = true
             this.name = "Snapshot"
             this.effect = effectValue;
-            console.log(`Effect: ${this.heal} ${this.effect}`)
+            console.log(`Effect: ${this.cardType} ${this.effect}`)
         }
         else if (type == "attDebuff"){
-            attDebuff = true;
-            this.name = "Restricted Access";
+            //setup for attack debuff cards
+            //attDebuff = true;
+            this.name = "Denial of Service";
             this.effect = effectValue;
-            console.log(`Effect: ${this.attDebuff} ${this.effect}`);
+            console.log(`Effect: ${this.cardType} ${this.effect}`);
         }
         else if (type == "defDebuff"){
-            defDebuff = true;
+            //setup for defense debuff cards
+            //defDebuff = true;
             this.name = "Compromised";
             this.effect = effectValue;
-            console.log(`Effect: ${this.defDebuff} ${this.effect}`);
+            console.log(`Effect: ${this.cardType} ${this.effect}`);
 
         }
         
+    
+   }
+
+   GetCardType(){
+        //returns cardtype for this card
+        return this.cardType;
+   }
+
+   GetCardEffect(){
+        //returns effect of card
+        return this.effect;
    }
 
    Print(){

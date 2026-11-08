@@ -4,6 +4,8 @@ export const maxHand = 5;
 
 
 export class Node {
+    //node class for LinkedList
+    //has data then points to next node
     constructor(data){
         this.data = data;
         this.next = null;
@@ -14,7 +16,7 @@ export class LinkedList{
     constructor(){
         this.head = null;
     }
-
+    //linkedlist function, constructs with head
     append(data){
         const newNode = new Node(data);
         if (!this.head){
@@ -27,7 +29,7 @@ export class LinkedList{
         }
         current.next = newNode;
     }
-    
+    //append data to the linkedlist
     showList(){
         let current = this.head;
         let index = 0;
@@ -42,35 +44,93 @@ export class LinkedList{
             index++;
         }
     }
+    //show what is in the linkedlist
 }
 
 
 export class Creature{
     health;
     defense;
-    deck = new Array[10];
-    discard = new Array[0];
-    hand = new Array[0];
+    baseDef;
+    deck = [];
+    discard = [];
+    hand = [];
     myTurn = false;
-
+    //class vars 
     constructor(health, defense){
         this.health = health;
-        this.defense = defense;
+        this.baseDef = defense;
+        this.defense = this.baseDef;
+        //console.log(`player created: ${this}`)
     }
+    //construct creature wit  health, defense   
+
+    PlayCard(index, target){
+        const card = this.hand[index];
+        const type = card.cardtype;
+        //card and type of that card
+        if (type == "attack"){
+            //reduce opponent's health by amount
+            target.health - card.effect; 
+
+        }
+        else if(type == "defense"){
+            //user's defense raised by number
+            this.defense += card.effect;
+        }
+        else if(type == "heal"){
+            //user heals health equal to value
+            this.health += card.effect;
+        }
+        else if(type == "attDebuff"){
+            //reduces attack of opponent
+            for (const cyard of target.deck) {
+                if(cyard.cardtype == "attack"){
+                    cyard.effect -= card.effect;
+                }
+            }
+        }
+        else if(type == "defDebuff"){
+            //reduce target's defense by effect
+            target.defense -= card.effect;
+        }
+
         
-
-    PlayCard(index){
-
+        //remove the played card from hand and add to discard array
+        this.hand.splice(index, 1); 
+        this.discard.push(index);
     }
 
-    DrawCard(){
-        const min = 0;
-        
+
+    DrawCard(){        
+        console.log("DrawCard has been called")
         while (this.hand.length < maxHand){
-            const random = Math.floor(Math.random() * 10);
-            const cardDrawn = deck[random];
+            //while size of hand is less than the maximum hand size
+            let random = () => 
+                {
+                    //gets random number for an index of the deck
+                    let num = 10; //base value; math.floor returns number between 0 - 9
+                    
+                    if(this.deck.length > 10 && this.deck.length < 101){ //when there are more than 10 cards in the deck
+                        num = 100; //set the math.floor value to return a number from 0 - 99
+                        
+                    }
+                    let ran = Math.floor(Math.random() * num); //set the random value to be random between either 0 - 9 or 0 - 99
+                    if(ran > this.deck.length){ //if the number generated is greater than the number of cards in the deck
+                        ran = this.deck.length; //random number becomes the last card in deck
+                     }
+                    return ran; //random returns the random number
+
+                    //this should account for it being increased AND decreased, good thing to consider...
+                     
+                }
+            
+            const cardDrawn = this.deck[random];
+            //choose random card from deck
             this.deck.splice(random, 1);
+            //remove chosen card from deck
             this.hand.push(cardDrawn);
+            //add chosen card to hand
 
         }
         
@@ -78,36 +138,73 @@ export class Creature{
 
     FlushHand(){
         while(this.hand.length != 0){
+            //while hand has cards in it
             this.hand.pop();
+            //remove card from hand
         }
         this.DrawCard();
+        //call DrawCard to get hand to full again with different cards
     }
 
 }
 
+//extending from Player extends to Creature class
 export class Player extends Creature{
-    health = 50;
-    defense = 5;
-    myTurn = true;
-
-    CreateHand(){
-        for (let index = 0; index < this.deck.length; index++) {
-            const element = this.deck[index];
-            if(index < 5){
-                element = new Card("attack", 7)
+    //thanks sam
+    constructor(health, defense){
+        super(health, defense);
+        this.CreateDeck;
+        this.DrawCard;
+        // for (let index = 0; index < 10; index++) {
+        //     if(index < 5){
+        //         let element = new Card("attack", 7)
+        //         this.deck.push(element);
+        //     }
+        //     else{
+        //         let  element = new Card("defense", 2);
+        //         this.deck.push(element);
+        //     } 
+        // }
+    }
+    
+    //create a hand with these cards
+    //function in this context cant happen inside of a class, you would have to move it out
+    CreateDeck(){
+        console.log("CreateDeck has been called")
+        for (let index = 0; index < 10; index++) {
+            //for index in array, element equal to this index of the deck
+            if (index < 5) {
+                this.deck.push(new Card("attack", 7));
             }
             else{
-                element = new Card("defense", 5)
+                this.deck.push(new Card("defense", 2));
             }
-            console.log(element);
         }
-        this.DisplayHand()
+        //then show hand
     }
     
     DisplayHand(){
         for (let index = 0; index < this.hand.length; index++) {
+            //for each item in hand
             const element = this.hand[index];
             console.log(`Card #${index + 1}: ${element.Print}`);
+            //log  that element
+        }
+    }
+    
+    ShowDiscard(){
+        //works same as DisplayHand but for discard array
+        for (let index = 0; index < this.discard.length; index++){
+            const element = this.discard[index];
+            console.log(`Card #${index + 1}: ${element.Print}`);
+        }
+    }
+
+    ShowDeck(){
+        //works same as DisplayHand but for deck array
+        for(let index = 0; index < this.deck.length; index++){
+            const element = this.discard[index];
+            console.log(`Card #${index + 1}: ${element.Print}`); 
         }
     }
 
@@ -119,24 +216,72 @@ export class Player extends Creature{
         //create turn managing system
     }
 
-    ShowDiscard(){
-        for (let index = 0; index < this.discard.length; index++){
-            const element = this.discard[index];
-            console.log(`Card #${index + 1}: ${element.Print}`);
-        }
-    }
-
-    ShowDeck(){
-        for(let index = 0; index < this.deck.length; index++){
-            const element = this.discard[index];
-            console.log(`Card #${index + 1}: ${element.Print}`); 
-        }
-    }
+    
 }
 
 export class Enemy extends Creature{
+    //Something sam was doing :)
+    //something ill continue later
+    constructor(health, defense){
+        super(health, defense);
+        this.CreateDeck;
+        //this deck should be like different based on enemies
+        this.DrawCard;
+        
+    }
+
+    CreateDeckSwan(){
+        console.log("CreateDeckSwan has been called")
+        for (let index = 0; index < 10; index++) {
+            //for index in array, element equal to this index of the deck
+            //giving different quantities and values for the cards for different enemies
+            if (index < 7) {
+                //swan gets 7 strong attacks
+                this.deck.push(new Card("attack", 10));
+            }
+            else{
+                //swan gets 3 debuffs
+                this.deck.push(new Card("defDebuff", 2));
+            }
+        }
+    }
+
+    CreateDeckPelican(){
+        console.log("CreateDeckPelican has been called")
+        for (let index = 0; index < 10; index++) {
+            //for index in array, element equal to this index of the deck
+            //giving different quantities and values for the cards for different enemies
+            //pelican gets 4 attacks, 3 heals, and 3 defense
+            if (index < 4) {
+                
+                this.deck.push(new Card("attack", 4));
+            }
+            else if (index >= 4 || index < 7){ 
+                this.deck.push(new Card("heal", 6));
+            }
+            else{
+                //pelican gets 3 defense
+                this.deck.push(new Card("defense", 10));
+            }
+        }
+    }
+
+    CreateDeckGoose(){
+        console.log("CreateDeckGoose has been called")
+        for (let index = 0; index < 10; index++) {
+            //for index in array, element equal to this index of the deck
+            //giving different quantities and values for the cards for different enemies
+            if (index < 10) {
+                //goose gets 10 strong attacks
+                this.deck.push(new Card("attack", 8));
+                //playtesting
+                //
+            }
+        }
+    }
     
 
+    
     
 }
 

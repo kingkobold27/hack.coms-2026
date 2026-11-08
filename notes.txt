@@ -1,0 +1,14 @@
+
+
+enemy's health decreased by attack's damage
+might need to make an accessor for the effectvalue in card, cant do that rn wdym?
+we construct the value, but we need to call it like how we GetCardType, in order to do damage
+GetCardEffect();
+card.cardtype returns a string value of which card it is
+card.effect is the int value for damage/heal etc
+its almost like I built it so that it's accessible everywhere
+:wilted_flower:
+sure
+can we keep all these comments for the presenation sweet
+:sob:
+oh we will need a getother as well, so to affect the enemy

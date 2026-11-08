@@ -1,8 +1,20 @@
 import {maxHand, Creature, Player, Enemy} from './Creature.js';
 import {Card} from './Card.js';
-function StartGame(){
-    const player = new Player(50, 5);
-    player.CreateHand;
+
+
+
+window.onload = () => {
+    let player = new Player(50, 5);
+    StartGame(player);
+}
+function StartGame(player){
+    
+    player.CreateDeck();
+    
+    player.DrawCard();
+    player.DisplayHand();
+    console.log(player);
+    
 }
 
 // TurnManager(){
