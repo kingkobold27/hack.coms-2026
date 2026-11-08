@@ -213,6 +213,9 @@ function chooseFunction(target){
 function TurnManager(pelican){
     RoundStart();
     let whoTurn = 1;
+    while(player.myTurn){
+        
+    }
     while(true){
         player.health;
         if(whoTurn % 2 != 0){
