@@ -41,7 +41,7 @@ export class Card{
             this.effect = effectValue;
             console.log(`Effect: ${this.cardType} ${this.effect}`);
         }
-        else if (type == "defDebuff"){
+        else if (type == "attBuff"){
             //setup for defense debuff cards
             //defDebuff = true;
             this.name = "Compromised";
@@ -49,25 +49,6 @@ export class Card{
             console.log(`Effect: ${this.cardType} ${this.effect}`);
 
         }
-        
-    
    }
-
-   GetCardType(){
-        //returns cardtype for this card
-        return this.cardType;
-   }
-
-   GetCardEffect(){
-        //returns effect of card
-        return this.effect;
-   }
-
-   Print(){
-    console.log(`Name: ${this.name} Type: ${this.cardType}, Effect Value: ${this.effect}`);
-   } 
-
-
-
 }
 

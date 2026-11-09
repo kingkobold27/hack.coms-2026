@@ -83,7 +83,7 @@ export class Creature{
         else if(type == "attDebuff"){
             //reduces attack of opponent
             for (const cyard of target.deck) {
-                if(cyard.cardtype == "attack"){
+                if(cyard.cardType == "attack"){
                     cyard.effect -= card.effect;
                 }
             }
@@ -91,14 +91,14 @@ export class Creature{
         else if(type == "attBuff"){
             //increase user's attack
             for (const cyard of target.deck) {
-                if(cyard.cardtype == "attack"){
+                if(cyard.cardType == "attack"){
                     cyard.effect += card.effect;
                 }
             }
         }
 
         //remove the played card from hand and add to discard array
-        this.discard.push(this.hand.splice(index, 1));
+        this.discard.push(this.hand.splice(index, 1))[0];
         
     }
 
@@ -106,12 +106,7 @@ export class Creature{
         //used to refill deck when empty
         if(this.deck.length == 0){
             //check to see if cards are available to draw 
-            this.deck = this.discard;
-            //discard becomes the deck
-            for(index =0; index <= this.deck.length; index++){
-                this.discard.pop();
-                //removes all items from discard
-            } 
+            this.deck = this.discard.splice(0);
         } 
     }
 
