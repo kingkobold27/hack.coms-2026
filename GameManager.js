@@ -1,7 +1,7 @@
 import {maxHand, Creature, Player, Enemy} from './Creature.js';
 import {Card} from './Card.js';
-let input = document.querySelector("#cmdLine");
 let terminal = document.querySelector("#terminal");
+terminal.style.background = `url`;
 let display = document.querySelector("#playArea");
 let logs = document.querySelector("#prevInput");
 let buttons = document.querySelectorAll("button");
@@ -51,7 +51,7 @@ function StartGame(){
     //TurnManager(pelican);
     while(iter <=4){
         let enemy = enemyArray[iter];
-        RoundStart(enemy);
+        RoundStart(enemyArray[iter]);
         player.FlushHand();
         player.DisplayHand();
         
@@ -89,6 +89,11 @@ function PathSelect(){
     let current = startToFinish[iter];
 
     blockout.innerHTML += `<button type='button' id='continue'> Continue to next stage </button>`;
+    document.querySelector('#continue').onclick = () => {
+        iter++;
+        RoundStart(enemyArray[iter]);
+    };
+
        
     playerPath.push(current);
     current = startToFinish[iter++];
@@ -102,13 +107,15 @@ function PathSelect(){
 }
 
 function RoundStart(eenemy){
-    if(enemyArray[iter] == goose){
+    if(eenemy == goose){
         enemySprite.innerHTML = `<img src='https://drive.google.com/file/d/1Q-7NFiQ1NQ7GpUjQL75GMUpXnVwXAbRp/view'`;
     }
     //console.log(`An Encounter Begins! Fighting: ${eenemy.name}`); 
     //initialize player and opponent
     player.myTurn = true;
-    
+    player.stamina = 3;
+    blockout.innerHTML = "";
+    logs.innerHTML += `<br>Encounter begins: ${eenemy.name} approches`;
 
     logs.innerHTML += `<br>Your turn start <br>Enter a function:`;
     NewTurns(eenemy);
@@ -153,9 +160,18 @@ function RoundWin(enemy){
         newCard = new Card("attBuff", 4)
         player.deck.push(newCard);
     }
-    logs.innerHTML += `<br>You defeated ${enemy}!`;
-    logs.innerHTML += `<br>You added ${newCard} to your deck`;
+    logs.innerHTML += `<br>You defeated ${enemy.name}!`;
+    logs.innerHTML += `<br>You added ${newCard.name} to your deck`;
+
+    if(iter == enemyArray.length - 1){
+        GameWin();
+    }
+    else{
+        PathSelect();
+    }
+
 }
+
 
 function GameWin(){
     blockout.innerHTML = `<div><p>You win, yay, you are better, + W, + Skilled</p></div>`;
@@ -163,6 +179,7 @@ function GameWin(){
 }
 
 function GameLoss(){
+    player.myTurn = false;
     blockout.innerHTML = `<div><p>You lost, lmao, get better, + L, + Ratio</p></div>`;
     blockout.innerHTML += `<button type='button' id='restart'> Restart :) </button>`;
 }
@@ -187,7 +204,6 @@ function getRandomArbitrary(min, max) {
 
  function NewTurns(enemy){
     combat = true;
-    while(combat){
         if(player.myTurn = true){
             if(player.stamina == 0){
                 player.myTurn = false;
@@ -213,7 +229,7 @@ function getRandomArbitrary(min, max) {
         }
         
     }
- }
+ 
  function GetCard(type){
     let chosenCard;
     for (const card of player.hand) {
